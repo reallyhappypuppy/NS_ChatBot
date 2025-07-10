@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+import random
 
 # 환경 변수 로드
 load_dotenv()
@@ -55,7 +56,12 @@ def chat():
                     "🍛 맛있는 카레 한 그릇!",
                 ],
             }
-            bot_response = response_map.get(keyword, "🙂 준비된 응답이 없어요!")
+            raw_response = response_map.get(keyword, "🙂 준비된 응답이 없어요!")
+            if isinstance(raw_response, list):
+                bot_response = random.choice(raw_response)
+            else:
+                bot_response = raw_response
+
             session["conversation_history"].append({"role": "assistant", "content": bot_response})
             return render_template("chat.html", conversation=session["conversation_history"], bot_response=bot_response)
 

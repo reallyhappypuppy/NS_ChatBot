@@ -1,0 +1,29 @@
+.chat-body {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+}
+
+.keyword-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.keyword-buttons form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
