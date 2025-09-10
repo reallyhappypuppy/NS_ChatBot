@@ -96,8 +96,8 @@ def reset():
     session.pop("conversation_history", None)
     return "", 204
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import eventlet
     import eventlet.wsgi
-    port = int(os.environ.get("PORT", 10000))  
-    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
+    port = int(os.environ.get("PORT", 5001))  
+    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", port)), app)
