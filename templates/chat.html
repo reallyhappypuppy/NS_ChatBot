@@ -19,7 +19,7 @@
         .chat-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             width: 90%;
             max-width: 700px;
             height: 90vh;
@@ -35,6 +35,44 @@
             margin-bottom: 15px;
             font-weight: bold;
             font-size: 1.8rem;
+        }
+
+        .chat-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .keyword-buttons form {
+            display: flex;
+            flex-wrap: wrap;   /* 화면 크기에 따라 줄바꿈 */
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .keyword-buttons button {
+            flex: 1 1 auto;
+            min-width: 120px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 30px;
+            background: #00c6ff;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 14px;
+        }
+
+        .keyword-buttons button:hover {
+            background: #0072ff;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .chat-log {
@@ -65,7 +103,7 @@
             color: #222;
         }
 
-        form {
+        .message-form {
             display: flex;
             gap: 10px;
             margin-top: 10px;
@@ -73,17 +111,18 @@
 
         input[type="text"] {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border-radius: 30px;
             border: none;
             font-size: 16px;
             outline: none;
             background-color: rgba(255, 255, 255, 0.2);
             color: #fff;
+            backdrop-filter: blur(10px);
         }
 
         button {
-            padding: 12px 18px;
+            padding: 14px 24px;
             background: #00c6ff;
             border: none;
             border-radius: 30px;
@@ -95,19 +134,6 @@
 
         button:hover {
             background: #0072ff;
-        }
-
-        .keyword-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-            justify-content: center;
-        }
-
-        .keyword-buttons button {
-            flex: 1 1 30%;
-            min-width: 100px;
         }
 
         .reset-form {
@@ -130,24 +156,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 📱 스마트폰 최적화 */
+        /* 📱 모바일 최적화 */
         @media (max-width: 600px) {
             h1 { font-size: 1.4rem; }
-            .chat-container {
-                width: 100%;
-                height: 100vh;
-                border-radius: 0;
-                padding: 10px;
-            }
-            form {
-                flex-direction: column;
-            }
-            input[type="text"], button {
-                width: 100%;
-                font-size: 14px;
-            }
             .keyword-buttons button {
-                flex: 1 1 45%; /* 두 개씩 줄바꿈 */
+                min-width: 100px;
+                font-size: 12px;
+                padding: 10px 12px;
+            }
+            input[type="text"] {
+                font-size: 14px;
+                padding: 12px;
+            }
+            button {
+                font-size: 14px;
+                padding: 12px 14px;
             }
         }
     </style>
@@ -155,39 +178,40 @@
 <body>
     <div class="chat-container">
         <h1>🌟 NS 챗봇</h1>
-        <div class="chat-log" id="chat-log">
-            {% for msg in conversation %}
-                <div class="message {{ 'user' if msg.role == 'user' else 'bot' }}">
-                    <strong>{{ '나' if msg.role == 'user' else '챗봇' }}:</strong> {{ msg.content }}
+        <div class="chat-body">
+            <div class="keyword-buttons">
+                <form method="post" action="/">
+                    <button type="submit" name="keyword" value="밥">🍱 배 고플 때</button>
+                    <button type="submit" name="keyword" value="공부">📚 공부하기 싫을 때</button>
+                    <button type="submit" name="keyword" value="피곤">😴 피곤할 때</button>
+                    <button type="submit" name="keyword" value="칭찬">🌟 칭찬받고 싶을 때</button>
+                    <button type="submit" name="keyword" value="격려">💪 응원이 필요할 때</button>
+                    <button type="submit" name="keyword" value="낙생고">🏫 낙생고</button>
+                    <button type="submit" name="keyword" value="명언">🧠 랜덤명언</button>
+                    <button type="submit" name="keyword" value="메뉴">🍽️ 메뉴추천</button>
+                    <button type="submit" name="keyword" value="운세">🥠 운세</button>
+                </form>
+            </div>
+
+            <div class="chat-main">
+                <div class="chat-log" id="chat-log">
+                    {% for msg in conversation %}
+                        <div class="message {{ 'user' if msg.role == 'user' else 'bot' }}">
+                            <strong>{{ '나' if msg.role == 'user' else '챗봇' }}:</strong> {{ msg.content }}
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+
+                <form method="post" action="/" class="message-form">
+                    <input type="text" name="message" placeholder="메시지를 입력하세요..." autocomplete="off" required />
+                    <button type="submit">보내기</button>
+                </form>
+
+                <form method="post" action="/reset" class="reset-form">
+                    <button type="submit">대화 초기화</button>
+                </form>
+            </div>
         </div>
-
-        <!-- 일반 메시지 입력 -->
-        <form method="post" action="/">
-            <input type="text" name="message" placeholder="메시지를 입력하세요..." autocomplete="off" required />
-            <button type="submit">보내기</button>
-        </form>
-
-        <!-- 키워드 버튼들 -->
-        <div class="keyword-buttons">
-            <form method="post" action="/">
-                <button type="submit" name="keyword" value="밥">🍱 배 고플 때</button>
-                <button type="submit" name="keyword" value="공부">📚 공부하기 싫을 때</button>
-                <button type="submit" name="keyword" value="피곤">😴 피곤할 때</button>
-                <button type="submit" name="keyword" value="칭찬">🌟 칭찬받고 싶을 때</button>
-                <button type="submit" name="keyword" value="격려">💪 응원이 필요할 때</button>
-                <button type="submit" name="keyword" value="낙생고">🏫 낙생고에 대해</button>
-                <button type="submit" name="keyword" value="명언">🧠 랜덤 명언</button>
-                <button type="submit" name="keyword" value="메뉴">🍽️ 메뉴 추천</button>
-                <button type="submit" name="keyword" value="운세">🥠 오늘의 운세</button>
-            </form>
-        </div>
-
-        <!-- 대화 초기화 -->
-        <form method="post" action="/reset" class="reset-form">
-            <button type="submit">대화 초기화</button>
-        </form>
     </div>
 
     <script>
