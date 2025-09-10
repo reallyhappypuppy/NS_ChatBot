@@ -22,6 +22,7 @@ def chat():
 
     if request.method == "POST":
 
+        # 버튼 클릭으로 들어온 경우 (keyword)
         keyword = request.form.get("keyword")
         if keyword:
             response_map = {
@@ -66,25 +67,27 @@ def chat():
             session["conversation_history"].append({"role": "assistant", "content": bot_response})
             return render_template("chat.html", conversation=session["conversation_history"], bot_response=bot_response)
 
-        user_input = request.form["message"]
-        conversation_history = session["conversation_history"]
-        conversation_history.append({"role": "user", "content": user_input})
+        # 일반 입력 (message)
+        user_input = request.form.get("message")
+        if user_input:  # message가 있을 때만 실행
+            conversation_history = session["conversation_history"]
+            conversation_history.append({"role": "user", "content": user_input})
 
-        try:
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=conversation_history,
-                max_tokens=300,
-                temperature=0.7,
-            )
-            bot_reply = response.choices[0].message.content.strip()
-            conversation_history.append({"role": "assistant", "content": bot_reply})
-            bot_response = bot_reply
-        except Exception as e:
-            print("❌ 오류:", str(e))
-            bot_response = f"⚠️ 오류 발생: {str(e)}"
+            try:
+                response = client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=conversation_history,
+                    max_tokens=300,
+                    temperature=0.7,
+                )
+                bot_reply = response.choices[0].message.content.strip()
+                conversation_history.append({"role": "assistant", "content": bot_reply})
+                bot_response = bot_reply
+            except Exception as e:
+                print("❌ 오류:", str(e))
+                bot_response = f"⚠️ 오류 발생: {str(e)}"
 
-        session["conversation_history"] = conversation_history
+            session["conversation_history"] = conversation_history
 
     return render_template("chat.html", conversation=session["conversation_history"], bot_response=bot_response)
 
