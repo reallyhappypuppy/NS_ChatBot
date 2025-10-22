@@ -5,6 +5,7 @@
     <title>AI 챗봇</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+        /* 🎨 기존 스타일 전부 그대로 */
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,7 +16,6 @@
             height: 100vh;
             color: #fff;
         }
-
         .chat-container {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -29,28 +29,15 @@
             backdrop-filter: blur(20px);
             position: relative;
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 1.8rem;
-        }
-
-        .chat-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
+        h1 { text-align: center; margin-bottom: 15px; font-weight: bold; font-size: 1.8rem; }
+        .chat-body { flex: 1; display: flex; flex-direction: column; }
         .keyword-buttons form {
             display: flex;
-            flex-wrap: wrap;   /* 화면 크기에 따라 줄바꿈 */
+            flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
             margin-bottom: 10px;
         }
-
         .keyword-buttons button {
             flex: 1 1 auto;
             min-width: 120px;
@@ -64,114 +51,33 @@
             transition: background 0.3s;
             font-size: 14px;
         }
-
-        .keyword-buttons button:hover {
-            background: #0072ff;
-        }
-
-        .chat-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-log {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            margin: 8px 0;
-            padding: 12px 18px;
-            border-radius: 20px;
-            max-width: 75%;
-            line-height: 1.5;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-        }
-
-        .bot {
-            align-self: flex-start;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            color: #222;
-        }
-
-        .message-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
+        .keyword-buttons button:hover { background: #0072ff; }
+        .chat-main { flex: 1; display: flex; flex-direction: column; }
+        .chat-log { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; }
+        .message { margin: 8px 0; padding: 12px 18px; border-radius: 20px; max-width: 75%; line-height: 1.5; animation: fadeIn 0.3s ease-in-out; }
+        .user { align-self: flex-end; background: linear-gradient(135deg, #43cea2, #185a9d); }
+        .bot { align-self: flex-start; background: linear-gradient(135deg, #f7971e, #ffd200); color: #222; }
+        .message-form { display: flex; gap: 10px; margin-top: 10px; }
         input[type="text"] {
-            flex: 1;
-            padding: 14px;
-            border-radius: 30px;
-            border: none;
-            font-size: 16px;
-            outline: none;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            backdrop-filter: blur(10px);
+            flex: 1; padding: 14px; border-radius: 30px; border: none; font-size: 16px; outline: none;
+            background-color: rgba(255, 255, 255, 0.2); color: #fff; backdrop-filter: blur(10px);
         }
-
-        button {
-            padding: 14px 24px;
-            background: #00c6ff;
-            border: none;
-            border-radius: 30px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #0072ff;
-        }
-
-        .reset-form {
-            margin-top: 10px;
-            text-align: center;
-        }
-
+        button { padding: 14px 24px; background: #00c6ff; border: none; border-radius: 30px; color: white; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #0072ff; }
+        .reset-form { margin-top: 10px; text-align: center; }
         .reset-form button {
-            background: transparent;
-            border: 1px solid #fff;
-            padding: 6px 16px;
-            font-size: 14px;
-            color: #fff;
-            border-radius: 20px;
-            cursor: pointer;
+            background: transparent; border: 1px solid #fff; padding: 6px 16px;
+            font-size: 14px; color: #fff; border-radius: 20px; cursor: pointer;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* 📱 모바일 최적화 */
         @media (max-width: 600px) {
             h1 { font-size: 1.4rem; }
-            .keyword-buttons button {
-                min-width: 100px;
-                font-size: 12px;
-                padding: 10px 12px;
-            }
-            input[type="text"] {
-                font-size: 14px;
-                padding: 12px;
-            }
-            button {
-                font-size: 14px;
-                padding: 12px 14px;
-            }
+            .keyword-buttons button { min-width: 100px; font-size: 12px; padding: 10px 12px; }
+            input[type="text"] { font-size: 14px; padding: 12px; }
+            button { font-size: 14px; padding: 12px 14px; }
         }
     </style>
 </head>
@@ -202,16 +108,17 @@
                     {% endfor %}
                 </div>
 
+                <!-- ✅ 메시지 입력 -->
                 <form method="post" action="/" class="message-form">
                     <input type="text" name="message" placeholder="메시지를 입력하세요..." autocomplete="off" required />
                     <button type="submit">보내기</button>
                 </form>
 
+                <!-- ✅ 로딩 표시 + 전송 기능 -->
                 <script>
                     const chatLog = document.getElementById('chat-log');
                     chatLog.scrollTop = chatLog.scrollHeight;
 
-                    // ✅ 메시지 전송 처리
                     const form = document.querySelector('.message-form');
                     form.addEventListener('submit', async (e) => {
                         e.preventDefault();
@@ -220,72 +127,56 @@
                         const message = input.value.trim();
                         if (!message) return;
 
-                        // 사용자 메시지 즉시 표시
+                        // 사용자 메시지 표시
                         const userDiv = document.createElement('div');
                         userDiv.classList.add('message', 'user');
                         userDiv.innerHTML = `<strong>나:</strong> ${message}`;
                         chatLog.appendChild(userDiv);
                         chatLog.scrollTop = chatLog.scrollHeight;
 
-                        // ✅ 로딩 메시지 표시
+                        // ✅ 로딩 표시 추가
                         const loadingDiv = document.createElement('div');
                         loadingDiv.classList.add('message', 'bot');
                         loadingDiv.innerHTML = `<strong>챗봇:</strong> 💭 생각 중...`;
                         chatLog.appendChild(loadingDiv);
                         chatLog.scrollTop = chatLog.scrollHeight;
 
-                        // 서버에 메시지 전송
                         const formData = new FormData();
                         formData.append('message', message);
 
-                        const response = await fetch('/', { method: 'POST', body: formData });
-                        const html = await response.text();
+                        try {
+                            const response = await fetch('/', { method: 'POST', body: formData });
+                            const html = await response.text();
 
-                        // 응답 HTML 파싱
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newMessages = doc.querySelectorAll('.chat-log .message');
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newMessages = doc.querySelectorAll('.chat-log .message');
 
-                        // ✅ 기존 로그 교체
-                        chatLog.innerHTML = '';
-                        newMessages.forEach(msg => chatLog.appendChild(msg));
-                        chatLog.scrollTop = chatLog.scrollHeight;
+                            chatLog.innerHTML = '';
+                            newMessages.forEach(msg => chatLog.appendChild(msg));
+                            chatLog.scrollTop = chatLog.scrollHeight;
+                        } catch (error) {
+                            loadingDiv.innerHTML = `<strong>챗봇:</strong> ⚠️ 서버 응답 오류`;
+                        }
 
-                        input.value = ''; // 입력창 초기화
+                        input.value = '';
                     });
+                </script>
 
-                    // ✅ 대화 초기화 (세션 & 화면 리셋)
+                <!-- ✅ 초기화 -->
+                <form method="post" action="/reset" class="reset-form" id="reset-form">
+                    <button type="submit">대화 초기화</button>
+                </form>
+
+                <script>
                     document.getElementById('reset-form').addEventListener('submit', async (e) => {
                         e.preventDefault();
                         await fetch('/reset', { method: 'POST' });
                         location.reload();
                     });
                 </script>
-
-
-                <form method="post" action="/reset" class="reset-form">
-                    <button type="submit">대화 초기화</button>
-                </form>
-
-                <script>
-                    const chatLog = document.getElementById('chat-log');
-                    chatLog.scrollTop = chatLog.scrollHeight; // 스크롤 자동 아래로
-
-                    // ✅ 대화 초기화 시 새로고침
-                    document.getElementById('reset-form').addEventListener('submit', async (e) => {
-                        e.preventDefault(); // 기본 제출 막기
-                        await fetch('/reset', { method: 'POST' });
-                        location.reload(); // 새로고침으로 완전 초기화
-                    });
-                </script>
-
             </div>
         </div>
     </div>
-
-    <script>
-        const chatLog = document.getElementById('chat-log');
-        chatLog.scrollTop = chatLog.scrollHeight; // 스크롤 자동 아래로
-    </script>
 </body>
 </html>

@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 import random
+import eventlet
+import eventlet.wsgi
 
 # 환경 변수 로드
 load_dotenv()
@@ -91,13 +93,13 @@ def chat():
 
     return render_template("chat.html", conversation=session["conversation_history"], bot_response=bot_response)
 
+
 @app.route("/reset", methods=["POST"])
 def reset():
     session.pop("conversation_history", None)
     return "", 204
 
+
 if __name__ == '__main__':
-    import eventlet
-    import eventlet.wsgi
     port = int(os.environ.get("PORT", 10000))  
     eventlet.wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
